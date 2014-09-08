@@ -1,4 +1,3 @@
-from unittest.mock import patch
 from ..hash_table_block import HashTable
 from nio.util.support.block_test_case import NIOBlockTestCase
 from nio.common.signal.base import Signal
@@ -6,11 +5,14 @@ from nio.common.signal.base import Signal
 
 class FlavorSignal(Signal):
     def __init__(self, flavor, size=None):
+        super().__init__()
         self.flavor = flavor
         self.size = size
 
+
 class KeyValueSignal(Signal):
     def __init__(self, key, value):
+        super().__init__()
         self.key = key
         self.value = value
 
