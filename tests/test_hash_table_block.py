@@ -10,7 +10,6 @@ class TestHashTable(NIOBlockTestCase):
         self.notified_signals = []
 
     def signals_notified(self, signals):
-        print(signals)
         self.notified_signals = signals
 
     def test_hash(self):
@@ -51,6 +50,7 @@ class TestHashTable(NIOBlockTestCase):
         self.assertEqual(['S', 'M', 'L'], self.notified_signals[0].cherry)
         self.assertEqual(['S'], self.notified_signals[0].banana)
         self.assertEqual(['S'], self.notified_signals[0].apple)
-        self.assertEqual(
-            ['{{$value}}'], getattr(self.notified_signals[0], "{{$key}}"))
+
+        # Make sure the bad one didn't make its way into the output signal
+        self.assertFalse(hasattr(self.notified_signals[0], 'flavor'))
         blk.stop()

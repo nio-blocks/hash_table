@@ -28,7 +28,6 @@ class HashTable(Block):
             try:
                 sig_key = self.key(signal)
                 sig_value = self.value(signal)
-                print(sig_value)
             except AttributeError:
                 # If we don't have the value on the signal, don't add it to the
                 # hash table
@@ -37,6 +36,5 @@ class HashTable(Block):
             # Append sig_value to the proper hash key
             hash_dict[sig_key].append(sig_value)
 
-        print(hash_dict)
-        if hash_dict:
+        if len(hash_dict):
             self.notify_signals([Signal(hash_dict)])
