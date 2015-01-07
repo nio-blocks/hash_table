@@ -9,7 +9,7 @@ class TestHashTable(NIOBlockTestCase):
         super().__init__(methodName)
         self.notified_signals = []
 
-    def signals_notified(self, signals):
+    def signals_notified(self, signals, output_id='default'):
         self.notified_signals = signals
 
     def test_hash(self):
