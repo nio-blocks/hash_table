@@ -32,9 +32,17 @@ class HashTable(Block):
                 # If we don't have the value on the signal, don't add it to the
                 # hash table
                 continue
+            except Exception as e:
+                self._logger.warning("Failed to evaluate props: {}".format(e))
 
             # Append sig_value to the proper hash key
-            hash_dict[sig_key].append(sig_value)
+            try:
+                if sig_key is not None:
+                    hash_dict[sig_key].append(sig_value)
+                else:
+                    self._logger.debug("Skipping key: {}".format(sig_key))
+            except Exception as e:
+                self._logger.warning("Failed to append value {} to key {}: {}".format(sig_value, sig_key, e))
 
         if len(hash_dict):
             self.notify_signals([Signal(hash_dict)])
