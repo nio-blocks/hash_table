@@ -5,12 +5,12 @@ from nio.util.support.block_test_case import NIOBlockTestCase
 
 class TestHashTable(NIOBlockTestCase):
 
-    def __init__(self, methodName='runTests'):
-        super().__init__(methodName)
+    def setUp(self):
+        super().setUp()
         self.notified_signals = []
 
     def signals_notified(self, signals, output_id='default'):
-        self.notified_signals = signals
+        self.notified_signals.extend(signals)
 
     def test_hash(self):
         signals = [{'flavor': 'cherry'},
@@ -54,3 +54,32 @@ class TestHashTable(NIOBlockTestCase):
         # Make sure the bad one didn't make its way into the output signal
         self.assertFalse(hasattr(self.notified_signals[0], 'flavor'))
         blk.stop()
+
+    def test_grouping(self):
+        signals = [{'group': 'fruit', 'key': 'cherry', 'value': 'S'},
+                   {'group': 'fruit', 'key': 'cherry', 'value': 'M'},
+                   {'group': 'fruit', 'key': 'cherry', 'value': 'L'},
+                   {'group': 'pie', 'key': 'banana', 'value': 'S'},
+                   {'group': 'pie', 'key': 'cherry', 'value': 'M'},
+                   {'group': 'pie', 'key': 'cherry', 'value': 'L'},
+                   {'group': 'fruit', 'key': 'banana', 'value': 'S'}]
+        blk = HashTable()
+        config = {
+            'group_attr': 'my_group',
+            'group_by': '{{$group}}',
+            'log_level': 'DEBUG'
+        }
+        self.configure_block(blk, config)
+        blk.process_signals([Signal(s) for s in signals])
+        self.assert_num_signals_notified(2, blk)
+        for sig_out in self.notified_signals:
+            # Make sure the group got assigned to the right attr
+            self.assertIn(sig_out.my_group, ['fruit', 'pie'])
+
+            # Assert the right values went to the right groups
+            if sig_out.my_group == 'fruit':
+                self.assertEqual(len(sig_out.cherry), 3)
+                self.assertEqual(len(sig_out.banana), 1)
+            elif sig_out.my_group == 'pie':
+                self.assertEqual(len(sig_out.cherry), 2)
+                self.assertEqual(len(sig_out.banana), 1)
