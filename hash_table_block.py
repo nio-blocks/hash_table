@@ -1,12 +1,13 @@
 from collections import defaultdict
 from nio.common.block.base import Block
 from nio.common.signal.base import Signal
+from .mixins.group_by.group_by_block import GroupBy
 from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties.expression import ExpressionProperty
+from nio.metadata.properties import ExpressionProperty, StringProperty
 
 
 @Discoverable(DiscoverableType.block)
-class HashTable(Block):
+class HashTable(GroupBy, Block):
 
     """ HashTable block.
 
@@ -20,8 +21,28 @@ class HashTable(Block):
         title='Key', default="{{$key}}", attr_default=AttributeError)
     value = ExpressionProperty(
         title='Value', default="{{$value}}", attr_default=AttributeError)
+    group_attr = StringProperty(title="Group By Key", default="")
 
-    def process_signals(self, signals):
+    def process_signals(self, signals, input_id='default'):
+        if self.group_attr:
+            self.for_each_group(self._get_hash_from_group, signals)
+        else:
+            self.notify_signal(self._perform_hash(signals))
+
+    def notify_signal(self, signal):
+        """ Notifies one signal, if it exists """
+        if signal:
+            self.notify_signals([signal])
+
+    def _get_hash_from_group(self, signals, group):
+        self._logger.debug("Processing group {} of {} signals".format(
+            group, len(signals)))
+        out_sig = self._perform_hash(signals)
+        if out_sig:
+            setattr(out_sig, self.group_attr, group)
+            self.notify_signal(out_sig)
+
+    def _perform_hash(self, signals):
         hash_dict = defaultdict(list)
 
         for signal in signals:
@@ -42,7 +63,9 @@ class HashTable(Block):
                 else:
                     self._logger.debug("Skipping key: {}".format(sig_key))
             except Exception as e:
-                self._logger.warning("Failed to append value {} to key {}: {}".format(sig_value, sig_key, e))
+                self._logger.warning(
+                    "Failed to append value {} to key {}: {}".format(
+                        sig_value, sig_key, e))
 
         if len(hash_dict):
-            self.notify_signals([Signal(hash_dict)])
+            return Signal(hash_dict)

@@ -8,6 +8,7 @@ Properties
 
 -   **key**: Expression property. Evaluates to attribute on output signal.
 -   **value**: Expression proprety. Evaluates to a value to be placed in an output signal list.
+-   **group_attr**: What attribute on the signal the group should be set to. If this is blank, no group by will be performed and only one signal will be emitted. Otherwise, the value of the group by expression will be set to this attribute on each output signal.
 
 
 Dependencies
