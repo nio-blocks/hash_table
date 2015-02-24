@@ -41,8 +41,7 @@ class TestHashTable(NIOBlockTestCase):
                    {'key': 'apple', 'value': 'S'},
                    {'flavor': 'bad'}]
         blk = HashTable()
-        config = {
-        }
+        config = {}
         self.configure_block(blk, config)
         blk.start()
         blk.process_signals([Signal(s) for s in signals])
@@ -50,6 +49,25 @@ class TestHashTable(NIOBlockTestCase):
         self.assertEqual(['S', 'M', 'L'], self.notified_signals[0].cherry)
         self.assertEqual(['S'], self.notified_signals[0].banana)
         self.assertEqual(['S'], self.notified_signals[0].apple)
+
+    def test_one_value(self):
+        signals = [{'key': 'cherry', 'value': 'S'},
+                   {'key': 'cherry', 'value': 'M'},
+                   {'key': 'cherry', 'value': 'L'},
+                   {'key': 'banana', 'value': 'S'},
+                   {'key': 'apple', 'value': 'S'},
+                   {'flavor': 'bad'}]
+        blk = HashTable()
+        config = {
+            'one_value': True
+        }
+        self.configure_block(blk, config)
+        blk.start()
+        blk.process_signals([Signal(s) for s in signals])
+        self.assert_num_signals_notified(1, blk)
+        self.assertEqual('L', self.notified_signals[0].cherry)
+        self.assertEqual('S', self.notified_signals[0].banana)
+        self.assertEqual('S', self.notified_signals[0].apple)
 
         # Make sure the bad one didn't make its way into the output signal
         self.assertFalse(hasattr(self.notified_signals[0], 'flavor'))

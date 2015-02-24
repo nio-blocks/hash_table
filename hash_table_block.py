@@ -3,7 +3,8 @@ from nio.common.block.base import Block
 from nio.common.signal.base import Signal
 from .mixins.group_by.group_by_block import GroupBy
 from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import ExpressionProperty, StringProperty
+from nio.metadata.properties import ExpressionProperty, StringProperty, \
+    BoolProperty
 
 
 @Discoverable(DiscoverableType.block)
@@ -16,12 +17,18 @@ class HashTable(GroupBy, Block):
     evaluated *key* and the value of that attribute will
     be a list with an item of *value* for each matching signal.
 
+    If *one_value* is True, the Signal attributes will be just a
+    single matching value instead of a list of all matching values.
+    If multiple matches, then the last signal processed will be the
+    value used.
+
     """
     key = ExpressionProperty(
         title='Key', default="{{$key}}", attr_default=AttributeError)
     value = ExpressionProperty(
         title='Value', default="{{$value}}", attr_default=AttributeError)
     group_attr = StringProperty(title="Group By Key", default="")
+    one_value = BoolProperty(title="One Value Per Key", default=False)
 
     def process_signals(self, signals, input_id='default'):
         if self.group_attr:
@@ -43,7 +50,7 @@ class HashTable(GroupBy, Block):
             self.notify_signal(out_sig)
 
     def _perform_hash(self, signals):
-        hash_dict = defaultdict(list)
+        hash_dict = defaultdict(None) if self.one_value else defaultdict(list)
 
         for signal in signals:
             try:
@@ -56,15 +63,18 @@ class HashTable(GroupBy, Block):
             except Exception as e:
                 self._logger.warning("Failed to evaluate props: {}".format(e))
 
-            # Append sig_value to the proper hash key
+            # Add sig_value to the proper hash key
             try:
                 if sig_key is not None:
-                    hash_dict[sig_key].append(sig_value)
+                    if self.one_value:
+                        hash_dict[sig_key] = sig_value
+                    else:
+                        hash_dict[sig_key].append(sig_value)
                 else:
                     self._logger.debug("Skipping key: {}".format(sig_key))
             except Exception as e:
                 self._logger.warning(
-                    "Failed to append value {} to key {}: {}".format(
+                    "Failed to add value {} to key {}: {}".format(
                         sig_value, sig_key, e))
 
         if len(hash_dict):
