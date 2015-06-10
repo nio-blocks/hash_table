@@ -4,7 +4,7 @@ from nio.common.signal.base import Signal
 from .mixins.group_by.group_by_block import GroupBy
 from nio.common.discovery import Discoverable, DiscoverableType
 from nio.metadata.properties import ExpressionProperty, StringProperty, \
-    BoolProperty
+    BoolProperty, VersionProperty
 
 
 @Discoverable(DiscoverableType.block)
@@ -24,17 +24,16 @@ class HashTable(GroupBy, Block):
 
     """
     key = ExpressionProperty(
-        title='Key', default="{{$key}}", attr_default=AttributeError)
+        title='Key', default="{{ $key }}", attr_default=AttributeError)
     value = ExpressionProperty(
-        title='Value', default="{{$value}}", attr_default=AttributeError)
-    group_attr = StringProperty(title="Group By Key", default="")
+        title='Value', default="{{ $value }}", attr_default=AttributeError)
+    group_attr = StringProperty(
+        title="Group Attribute Name", default="group", visible=False)
     one_value = BoolProperty(title="One Value Per Key", default=False)
+    version = VersionProperty('0.1.0')
 
     def process_signals(self, signals, input_id='default'):
-        if self.group_attr:
-            self.for_each_group(self._get_hash_from_group, signals)
-        else:
-            self.notify_signal(self._perform_hash(signals))
+        self.for_each_group(self._get_hash_from_group, signals)
 
     def notify_signal(self, signal):
         """ Notifies one signal, if it exists """

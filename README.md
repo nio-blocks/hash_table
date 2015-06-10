@@ -10,7 +10,8 @@ Properties
 
 -   **key**: Expression property. Evaluates to attribute on output signal.
 -   **value**: Expression proprety. Evaluates to a value to be placed in an output signal list.
--   **group_attr**: What attribute on the signal the group should be set to. If this is blank, no group by will be performed and only one signal will be emitted. Otherwise, the value of the group by expression will be set to this attribute on each output signal.
+-   **group_by**: Expression to group signals by. 
+-   **group_attr**: When *group_by* is used, the name of the group will be stored in a Signal attribute by this name.
 -   **one_value**: If True, the output signals have attribute values that are a single value instead of a list of all matching values. When multiple signals match one key, the value used is from the last signal processed.
 
 
