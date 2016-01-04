@@ -1,6 +1,7 @@
-from ..hash_table_block import HashTable
+import datetime
 from nio.common.signal.base import Signal
 from nio.util.support.block_test_case import NIOBlockTestCase
+from ..hash_table_block import HashTable
 
 
 class TestHashTable(NIOBlockTestCase):
@@ -101,3 +102,30 @@ class TestHashTable(NIOBlockTestCase):
             elif sig_out.my_group == 'pie':
                 self.assertEqual(len(sig_out.cherry), 2)
                 self.assertEqual(len(sig_out.banana), 1)
+
+    def test_non_string_attributes(self):
+        now = datetime.datetime.utcnow()
+        signals = [{'name': 123, 'value': 456},
+                   {'name': 'str', 'value': 'string'},
+                   {'name': {}, 'value': {}},
+                   {'name': None, 'value': None},
+                   {'name': now, 'value': now},
+                   ]
+        blk = HashTable()
+        self.configure_block(blk, {
+            "key": "{{ $name }}",
+            "value": "{{ $value }}",
+            "one_value": True
+        })
+        blk.start()
+        blk.process_signals([Signal(s) for s in signals])
+        self.assert_num_signals_notified(1, blk)
+        self.assertDictEqual(self.notified_signals[0].to_dict(), {
+            "group": "null",
+            "123": 456,
+            "str": "string",
+            "{}": {},
+            "None": None,
+            str(now): now
+        })
+        blk.stop()
