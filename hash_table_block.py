@@ -54,6 +54,8 @@ class HashTable(GroupBy, Block):
         for signal in signals:
             try:
                 sig_key = self.key(signal)
+                # Signal keys need to be strings
+                sig_key = str(sig_key)
                 sig_value = self.value(signal)
             except AttributeError:
                 # If we don't have the value on the signal, don't add it to the
