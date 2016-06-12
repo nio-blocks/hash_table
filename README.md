@@ -20,8 +20,7 @@ _Signals Input_:
 ]
 ```
 
-#### basic config with key based on "type"
-_Block Config_:
+_Block Config with key based on "type"_:
 
 ```python
 key : {{ $type }}
@@ -39,8 +38,7 @@ _Signal Output_:
     "group": ""
 }
 ```
-#### basic config with key based on "color"
-_Block Config_:
+_Block Config with key based on "color"_:
 
 ```python
 key : {{ $color }}
@@ -57,9 +55,7 @@ _Signal Output_:
 }
 ```
 
-#### basic config with key based on "type" and "One Value Per Key" checked (one_value = True)
-
-_Block Config_:
+_Block Config with key based on "type" and "One Value Per Key" checked (one_value = True)_:
 
 ```python
 key : {{ $type }}
@@ -77,9 +73,8 @@ _Signal Output_:
     "group": ""
 }
 ```
-#### config using *group_by* to assign name to *group* Signal attribute
 
-_Block Config_:
+_Block Config using *group_by* to assign name to the *group* Signal attribute_:
 
 ```python
 key : {{ $type }}
