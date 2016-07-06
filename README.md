@@ -3,7 +3,7 @@ HashTable
 
 Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated **key** and the **value** of the key will be a **list** containing each value found with that key.
 
-If `one_value` is `True`, the output signal's attributes will have a single value instead of a list of all values. If multiple matching keys are found, the value of the last input signal processed will be the value of the key.
+If `one_value` is `True`, the output signal's attributes will each have a single value instead of a list of all values. If multiple matching keys are found, the value of the last input signal processed will be the value of the key.
 
 If `group_by` is defined, an output signal will be produced for each value in the `group_by` attribute.
 
@@ -13,7 +13,7 @@ Properties
 -   **value**: Expression property. Evaluates to a value in a list of values with a matching key.
 -   **group_by**: Expression to group signals by.
 -   **group_attr**: When `group_by` is used, this is the value that will be stored in a signal attribute called, in this case, `group`.
--   **one_value**: If `True`, the output signal's attributes have a single value instead of a list of values. When multiple input signals have the same key, the value of the last signal processed is the value of the output signal's attribute.
+-   **one_value**: If `True`, the output signal's attributes have a single value instead of a list of values. When multiple input signals match one key, the value of the last signal processed is the value used.
 
 Dependencies
 ------------
@@ -109,7 +109,7 @@ group_by: {{ $color }}
 one_value: False
 ```
 
-**Output Signals**
+**Output Signals (one for each value of `color`)**
 
 ```python
 [
