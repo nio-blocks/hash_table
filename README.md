@@ -1,19 +1,19 @@
 HashTable
 =========
 
-Group a list of signals into one hash table Signal. The output Signal will contain an attribute for each evaluated **key** and the **value** of the **key** attribute will be a **list** with an item of **value** for each matching signal.
+Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated **key** and the **value** of the key will be a **list** containing each value found with that key.
 
-If `one_value` is `True`, the Signal attributes will have a single matching value instead of a list of all values with a matching key. If multiple matches, then the last input signal processed will be the value used.
+If `one_value` is `True`, the output signal's attributes will have a single value instead of a list of all values. If multiple matching keys are found, the value of the last input signal processed will be the value of the key.
 
-If `group_by` is defined, a Signal for each value in the `group_by` attribute will be produced.
+If `group_by` is defined, an output signal will be produced for each value in the `group_by` attribute.
 
 Properties
 ----------
--   **key**: Expression property. Evaluates to key attribute on output Signal.
+-   **key**: Expression property. Evaluates to a key attribute on output signal.
 -   **value**: Expression property. Evaluates to a value in a list of values with a matching key.
 -   **group_by**: Expression to group signals by.
--   **group_attr**: When `group_by` is used, this is the value that will be stored in a Signal attribute called, in this case, `group`.
--   **one_value**: If `True`, the output signals have attribute values that are a single value instead of a list of all matching values. When multiple signals match one key, the value used is from the last signal processed.
+-   **group_attr**: When `group_by` is used, this is the value that will be stored in a signal attribute called, in this case, `group`.
+-   **one_value**: If `True`, the output signal's attributes have a single value instead of a list of values. When multiple input signals have the same key, the value of the last signal processed is the value of the output signal's attribute.
 
 Dependencies
 ------------
@@ -25,11 +25,11 @@ None
 
 Output
 ------
-For each input list of signals there is one output Signal. It has an attribute for each **key** and that attribute is a list with a **value** for each corresponding input signal.
+For each list of input signals there is one output signal. It has an attribute for each **key** and that attribute is a **list** containing a **value** for each matching key found in an input signal.
 
-If `one_value` is `True`, then the Signal values are a single item instead of a list of all matching values.
+If `one_value` is `True`, then each attribute on the output signal has a value that is a single item instead of a list of all matching values.
 
-If `group_by` is defined, that attribute will effectively define a new input list of signals. One Signal will be output for each value found in the `group_by` attribute.
+If `group_by` is defined, the `group_by` attribute will effectively define a new list of input signals. One output signal will be generated for each value found in the `group_by` attribute.
 
 Examples
 --------
