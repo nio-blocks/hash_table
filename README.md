@@ -1,11 +1,11 @@
 HashTable
 =========
 
-Group a list of signals into one hash table signal. The output signal will contain an attribute for each evaluated **key** and the value of the **key** attribute will be a list with an item of **value** for each matching signal.
+Group a list of signals into one hash table Signal. The output Signal will contain an attribute for each evaluated **key** and the value of the **key** attribute will be a **list** with an item of **value** for each matching signal.
 
-If **one_value** is True, the Signal attributes will be just a single matching value instead of a list of all matching values. If multiple matches, then the last signal processed will be the value used.
+If `one_value` is `True`, the Signal attributes will have a single matching value instead of a list of all matching values. If multiple matches, then the last input signal processed will be the value used.
 
-If **group_by** is used, a Signal for each value in the **group_by** attribute will be produced.
+If **group_by** is defined, a Signal for each value in the **group_by** attribute will be produced.
 
 Properties
 ----------
@@ -33,9 +33,9 @@ Output
 ------
 For each input list of signals there is one output signal. It has an attribute for each **key** and that attribute is a list with a **value** for each corresponding input signal.
 
-If **one_value** is True, then the signal values are a single item instead of a list of all matching values.
+If `one_value` is `True`, then the signal values are a single item instead of a list of all matching values.
 
-If **group_by** is defined, that attribute will effectively define a new input list. One signal will be output for each value found in the **group_by** attribute.
+If **group_by** is defined, that attribute will effectively define a new input list of signals. One signal will be output for each value found in the **group_by** attribute.
 
 Examples
 --------
