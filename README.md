@@ -1,21 +1,19 @@
 HashTable
 =========
 
-Group a list of signals into one hash table Signal. The output Signal will contain an attribute for each evaluated **key** and the value of the **key** attribute will be a **list** with an item of **value** for each matching signal.
+Group a list of signals into one hash table Signal. The output Signal will contain an attribute for each evaluated **key** and the **value** of the **key** attribute will be a **list** with an item of **value** for each matching signal.
 
-If `one_value` is `True`, the Signal attributes will have a single matching value instead of a list of all matching values. If multiple matches, then the last input signal processed will be the value used.
+If `one_value` is `True`, the Signal attributes will have a single matching value instead of a list of all values with a matching key. If multiple matches, then the last input signal processed will be the value used.
 
-If **group_by** is defined, a Signal for each value in the **group_by** attribute will be produced.
+If `group_by` is defined, a Signal for each value in the `group_by` attribute will be produced.
 
 Properties
 ----------
-
--   **key**: Expression property. Evaluates to key attribute on output signal.
--   **value**: Expression property. Evaluates to a value to be placed in an output signal list.
+-   **key**: Expression property. Evaluates to key attribute on output Signal.
+-   **value**: Expression property. Evaluates to a value in a list of values with a matching key.
 -   **group_by**: Expression to group signals by.
--   **group_attr**: When *group_by* is used, this is the value that will be stored in a Signal attribute called, in this case, "group".
--   **one_value**: If True, the output signals have attribute values that are a single value instead of a list of all matching values. When multiple signals match one key, the value used is from the last signal processed.
-
+-   **group_attr**: When `group_by` is used, this is the value that will be stored in a Signal attribute called, in this case, `group`.
+-   **one_value**: If `True`, the output signals have attribute values that are a single value instead of a list of all matching values. When multiple signals match one key, the value used is from the last signal processed.
 
 Dependencies
 ------------
@@ -25,17 +23,13 @@ Commands
 --------
 None
 
-Input
------
-The signals should have attributes that can be evaluated by **key** and **value**.
-
 Output
 ------
-For each input list of signals there is one output signal. It has an attribute for each **key** and that attribute is a list with a **value** for each corresponding input signal.
+For each input list of signals there is one output Signal. It has an attribute for each **key** and that attribute is a list with a **value** for each corresponding input signal.
 
-If `one_value` is `True`, then the signal values are a single item instead of a list of all matching values.
+If `one_value` is `True`, then the Signal values are a single item instead of a list of all matching values.
 
-If **group_by** is defined, that attribute will effectively define a new input list of signals. One signal will be output for each value found in the **group_by** attribute.
+If `group_by` is defined, that attribute will effectively define a new input list of signals. One Signal will be output for each value found in the `group_by` attribute.
 
 Examples
 --------
@@ -52,13 +46,12 @@ Examples
 ]
 ```
 
-**Block Config with _key_ based on _type_**
+**Block Config with _key_ based on `type`**
 
 ```
 key: {{ $type }},
 value: {{ $size }},
 one_value: False
-
 ```
 
 **Signal Output**
@@ -71,7 +64,7 @@ one_value: False
   "group": ""
 }
 ```
-**Block Config with _key_ based on _color_**
+**Block Config with _key_ based on `color`**
 
 ```
 key: {{ $color }}
@@ -89,7 +82,7 @@ one_value: False
 }
 ```
 
-**Block Config with _key_ based on _type_ and _One Value Per Key_ checked**
+**Block Config with _key_ based on `color` and _One Value Per Key_ checked**
 
 ```
 key: {{ $color }}
@@ -107,7 +100,7 @@ one_value: True
 }
 ```
 
-**Block Config using _group_by_ to spit out multiple signals**
+**Block Config using `group_by` to spit out multiple signals**
 
 ```
 key: {{ $type }}
