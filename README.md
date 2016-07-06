@@ -34,7 +34,7 @@ If `group_by` is defined, that attribute will effectively define a new input lis
 Examples
 --------
 
-**Signals Input**
+**Input Signals**
 
 ```python
 [
@@ -48,13 +48,11 @@ Examples
 
 **Block Config with _key_ based on `type`**
 
-```
-key: {{ $type }},
-value: {{ $size }},
-one_value: False
-```
+**Key** `{{ $type }}`
+**Value** `{{ $size }}`
+** One Value Per Key** `False`
 
-**Signal Output**
+**Output Signal**
 
 ```python
 {
@@ -72,7 +70,7 @@ value: {{ $type }}
 one_value: False
 ```
 
-**Signal Output**
+**Output Signal**
 
 ```python
 {
@@ -90,7 +88,7 @@ value: {{ $type }}
 one_value: True
 ```
 
-**Signal Output**
+**Output Signal**
 
 ```python
 {
@@ -109,7 +107,7 @@ group_by: {{ $color }}
 one_value: False
 ```
 
-**Signal Output**
+**Output Signals**
 
 ```python
 [
