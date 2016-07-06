@@ -48,9 +48,11 @@ Examples
 
 **Block Config with _key_ based on `type`**
 
-**Key** `{{ $type }}`
-**Value** `{{ $size }}`
-** One Value Per Key** `False`
+```
+key: {{ $type }},
+value: {{ $size }},
+one_value: False
+```
 
 **Output Signal**
 
