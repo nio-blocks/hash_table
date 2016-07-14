@@ -1,19 +1,19 @@
 HashTable
 =========
 
-Group a list of signals into one hash table signal. The output signal will contain an attribute for each evaluated *key* and the value of that attribute will be a list with an item of *value* for each matching signal.
+Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated **key** and the **value** of the key will be a **list** containing each value with a matching key.
 
-If *one_value* is True, the Signal attributes will be just a single matching value instead of a list of all matching values. If multiple matches, then the last signal processed will be the value used.
+If `one_value` is `True`, the output signal's attributes will each have a single value instead of a list of all values. If multiple matching keys are found, the value of the last input signal processed will be the value of the key.
+
+If `group_by` is defined, an output signal will be produced for each value in the `group_by` attribute.
 
 Properties
 ----------
-
--   **key**: Expression property. Evaluates to attribute on output signal.
--   **value**: Expression proprety. Evaluates to a value to be placed in an output signal list.
--   **group_by**: Expression to group signals by. 
--   **group_attr**: When *group_by* is used, the name of the group will be stored in a Signal attribute by this name.
--   **one_value**: If True, the output signals have attribute values that are a single value instead of a list of all matching values. When multiple signals match one key, the value used is from the last signal processed.
-
+-   **key**: Expression property. Evaluates to a key attribute on output signal.
+-   **value**: Expression property. Evaluates to a value in a list of values with a matching key.
+-   **group_by**: Expression to group signals by.
+-   **group_attr**: When `group_by` is used, this is the value that will be stored in a signal attribute called, in this case, `group`.
+-   **one_value**: If `True`, the output signal's attributes have a single value instead of a list of values. When multiple input signals match one key, the value of the last signal processed is the value used.
 
 Dependencies
 ------------
@@ -23,10 +23,97 @@ Commands
 --------
 None
 
-Input
------
-The signals should have attributes that can be evaluated by *key* and *value*.
-
 Output
 ------
-For each input list of signals there is one output signal. It has an attribute for each *key* and that attribute is a list with a *value* for each corresponding input signal. When *group_attr* is set, it will be added as a value on the output signal with a value that is the group. If *one_value* is True, then the signal values are a single item instead of a list of all matching values.
+For each list of input signals there is one output signal. It has an attribute for each **key** and that attribute is a **list** containing a **value** for each matching key found in an input signal.
+
+If `one_value` is `True`, then each attribute on the output signal has a value that is a single item instead of a list of all matching values.
+
+If `group_by` is defined, the `group_by` attribute will effectively define a new list of input signals. One output signal will be generated for each value found in the `group_by` attribute.
+
+Examples
+--------
+
+**Input Signals**
+
+```python
+[
+{ "type": "shirt", "color": "red", "size": 10},
+{ "type": "shirt", "color": "red", "size": 14},
+{ "type": "shirt", "color": "orange", "size": 12},
+{ "type": "scarf", "color": "red", "size": "M"},
+{ "type": "shoes", "color": "orange", "size": 8}
+]
+```
+
+**Block Config with _key_ based on `type`**
+
+```
+key: {{ $type }},
+value: {{ $size }},
+one_value: False
+```
+
+**Output Signal**
+
+```python
+{
+  "shoes": [8],
+  "scarf": ["M"],
+  "shirt": [10, 14, 12],
+  "group": ""
+}
+```
+**Block Config with _key_ based on `color`**
+
+```
+key: {{ $color }}
+value: {{ $type }}
+one_value: False
+```
+
+**Output Signal**
+
+```python
+{
+  "orange": ["shirt", "shoes"],
+  "red": ["shirt", "shirt", "scarf"],
+  "group": ""
+}
+```
+
+**Block Config with _key_ based on `color` and _One Value Per Key_ checked**
+
+```
+key: {{ $color }}
+value: {{ $type }}
+one_value: True
+```
+
+**Output Signal**
+
+```python
+{
+  "red": "scarf",
+  "orange": "shoes",
+  "group": ""
+}
+```
+
+**Block Config using `group_by` to spit out multiple signals**
+
+```
+key: {{ $type }}
+value: {{ $size }}
+group_by: {{ $color }}
+one_value: False
+```
+
+**Output Signals (one for each value of `color`)**
+
+```python
+[
+  {"group": "orange", "shoes": [8], "shirt": [12]},
+  {"group": "red", "scarf": ["M"], "shirt": [10, 14]}
+]
+```
