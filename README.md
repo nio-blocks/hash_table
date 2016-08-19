@@ -7,7 +7,7 @@ If `one_value` is `True`, the output signal's attributes will each have a single
 
 If `group_by` is defined, an output signal will be produced for each value in the `group_by` attribute.
 
-If including existing signal attrinbutes with `enrich`, then the last signal passed into the block will be the one enriched.
+If including existing signal attributes with `enrich`, then the last signal passed into the block will be the one enriched.
 
 Properties
 ----------
@@ -65,6 +65,7 @@ one_value: False
   "shirt": [10, 14, 12],
   "group": ""
 }
+```
 
 **Block Config with _key_ based on `type` and enriching signals**
 
@@ -87,8 +88,8 @@ enrich.exclude_existing: False
   "color": "orange",
   "size": 8
 }
-
 ```
+
 **Block Config with _key_ based on `color`**
 
 ```
