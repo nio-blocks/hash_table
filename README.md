@@ -7,6 +7,8 @@ If `one_value` is `True`, the output signal's attributes will each have a single
 
 If `group_by` is defined, an output signal will be produced for each value in the `group_by` attribute.
 
+If including existing signal attrinbutes with `enrich`, then the last signal passed into the block will be the one enriched.
+
 Properties
 ----------
 -   **key**: Expression property. Evaluates to a key attribute on output signal.
@@ -63,6 +65,29 @@ one_value: False
   "shirt": [10, 14, 12],
   "group": ""
 }
+
+**Block Config with _key_ based on `type` and enriching signals**
+
+```
+key: {{ $type }},
+value: {{ $size }},
+one_value: False
+enrich.exclude_existing: False
+```
+
+**Output Signal**
+
+```python
+{
+  "shoes": [8],
+  "scarf": ["M"],
+  "shirt": [10, 14, 12],
+  "group": "",
+  "type": "shoes",
+  "color": "orange",
+  "size": 8
+}
+
 ```
 **Block Config with _key_ based on `color`**
 

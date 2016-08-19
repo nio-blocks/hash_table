@@ -33,16 +33,39 @@ class TestHashTable(NIOBlockTestCase):
                    {'key': 'cherry', 'value': 'L'},
                    {'key': 'banana', 'value': 'S'},
                    {'key': 'apple', 'value': 'S'}]
-                   #{'flavor': 'bad'}]
         blk = HashTable()
-        config = {}
-        self.configure_block(blk, config)
+        self.configure_block(blk, {})
         blk.start()
         blk.process_signals([Signal(s) for s in signals])
         self.assert_num_signals_notified(1, blk)
-        self.assertEqual(['S', 'M', 'L'], self.last_notified[DEFAULT_TERMINAL][0].cherry)
-        self.assertEqual(['S'], self.last_notified[DEFAULT_TERMINAL][0].banana)
-        self.assertEqual(['S'], self.last_notified[DEFAULT_TERMINAL][0].apple)
+        self.assertEqual(self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
+            "apple": ['S'],
+            "banana": ['S'],
+            "cherry": ['S', 'M', 'L'],
+            "group": None,
+        })
+
+    def test_defaults_with_enrich_signals(self):
+        signals = [{'key': 'cherry', 'value': 'S'},
+                   {'key': 'cherry', 'value': 'M'},
+                   {'key': 'cherry', 'value': 'L'},
+                   {'key': 'banana', 'value': 'S'},
+                   {'key': 'apple', 'value': 'S'}]
+        blk = HashTable()
+        self.configure_block(blk, {
+            "enrich": {"exclude_existing": False}
+        })
+        blk.start()
+        blk.process_signals([Signal(s) for s in signals])
+        self.assert_num_signals_notified(1, blk)
+        self.assertEqual(self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
+            "apple": ['S'],
+            "banana": ['S'],
+            "cherry": ['S', 'M', 'L'],
+            "group": None,
+            "key": "apple",
+            "value": "S",
+        })
 
     def test_one_value(self):
         signals = [{'key': 'cherry', 'value': 'S'},
