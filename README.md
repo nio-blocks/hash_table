@@ -1,7 +1,7 @@
 HashTable
 =========
 
-Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated **key** and the **value** of the key will be a **list** containing each value with a matching key.
+Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.
 
 If `one_value` is `True`, the output signal's attributes will each have a single value instead of a list of all values. If multiple matching keys are found, the value of the last input signal processed will be the value of the key.
 
@@ -25,7 +25,7 @@ None
 
 Output
 ------
-For each list of input signals there is one output signal. It has an attribute for each **key** and that attribute is a **list** containing a **value** for each matching key found in an input signal.
+For each list of input signals there is one output signal. It has an attribute for each `key` and that attribute is a **list** containing a `value` for each matching key found in an input signal.
 
 If `one_value` is `True`, then each attribute on the output signal has a value that is a single item instead of a list of all matching values.
 
