@@ -1,0 +1,32 @@
+{
+  "nio/HashTable": {
+    "Dependencies": [
+      "None"
+    ],
+    "Properties": {
+      "key": {
+        "description": "Expression property. Evaluates to a key attribute on output signal."
+      },
+      "group_attr": {
+        "description": "When `group_by` is used, this is the value that will be stored in a signal attribute called, in this case, `group`."
+      },
+      "value": {
+        "description": "Expression property. Evaluates to a value in a list of values with a matching key."
+      },
+      "one_value": {
+        "description": "If `True`, the output signal's attributes have a single value instead of a list of values. When multiple input signals match one key, the value of the last signal processed is the value used."
+      },
+      "group_by": {
+        "description": "Expression to group signals by."
+      }
+    },
+    "Miscellaneous": {
+      "Examples": "**Input Signals**\n```python\n[\n{ \"type\": \"shirt\", \"color\": \"red\", \"size\": 10},\n{ \"type\": \"shirt\", \"color\": \"red\", \"size\": 14},\n{ \"type\": \"shirt\", \"color\": \"orange\", \"size\": 12},\n{ \"type\": \"scarf\", \"color\": \"red\", \"size\": \"M\"},\n{ \"type\": \"shoes\", \"color\": \"orange\", \"size\": 8}\n]\n```\n**Block Config with _key_ based on `type`**\n```\nkey: {{ $type }},\nvalue: {{ $size }},\none_value: False\n```\n**Output Signal**\n```python\n{\n\"shoes\": [8],\n\"scarf\": [\"M\"],\n\"shirt\": [10, 14, 12],\n\"group\": \"\"\n}\n```\n**Block Config with _key_ based on `type` and enriching signals**\n```\nkey: {{ $type }},\nvalue: {{ $size }},\none_value: False\nenrich.exclude_existing: False\n```\n**Output Signal**\n```python\n{\n\"shoes\": [8],\n\"scarf\": [\"M\"],\n\"shirt\": [10, 14, 12],\n\"group\": \"\",\n\"type\": \"shoes\",\n\"color\": \"orange\",\n\"size\": 8\n}\n```\n**Block Config with _key_ based on `color`**\n```\nkey: {{ $color }}\nvalue: {{ $type }}\none_value: False\n```\n**Output Signal**\n```python\n{\n\"orange\": [\"shirt\", \"shoes\"],\n\"red\": [\"shirt\", \"shirt\", \"scarf\"],\n\"group\": \"\"\n}\n```\n**Block Config with _key_ based on `color` and _One Value Per Key_ checked**\n```\nkey: {{ $color }}\nvalue: {{ $type }}\none_value: True\n```\n**Output Signal**\n```python\n{\n\"red\": \"scarf\",\n\"orange\": \"shoes\",\n\"group\": \"\"\n}\n```\n**Block Config using `group_by` to spit out multiple signals**\n```\nkey: {{ $type }}\nvalue: {{ $size }}\ngroup_by: {{ $color }}\none_value: False\n```\n**Output Signals (one for each value of `color`)**\n```python\n[\n{\"group\": \"orange\", \"shoes\": [8], \"shirt\": [12]},\n{\"group\": \"red\", \"scarf\": [\"M\"], \"shirt\": [10, 14]}\n]\n```"
+    },
+    "Version": "1.0.0",
+    "Category": "SignalModifier",
+    "Output": "For each list of input signals there is one output signal. It has an attribute for each `key` and that attribute is a **list** containing a `value` for each matching key found in an input signal.\nIf `one_value` is `True`, then each attribute on the output signal has a value that is a single item instead of a list of all matching values.\nIf `group_by` is defined, the `group_by` attribute will effectively define a new list of input signals. One output signal will be generated for each value found in the `group_by` attribute.",
+    "Description": "Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.\nIf `one_value` is `True`, the output signal's attributes will each have a single value instead of a list of all values. If multiple matching keys are found, the value of the last input signal processed will be the value of the key.\nIf `group_by` is defined, an output signal will be produced for each value in the `group_by` attribute.\nIf including existing signal attributes with `enrich`, then the last signal passed into the block will be the one enriched.",
+    "Commands": {}
+  }
+}
