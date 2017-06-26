@@ -7,6 +7,15 @@ from ..hash_table_block import HashTable
 
 class TestHashTable(NIOBlockTestCase):
 
+    def signals_notified(self, block, signals, output_id):
+        """ Don't extend last notified signals.
+
+        We want to REPLACE the last signals notified each time the block
+        notifies signals rather than EXTEND the list. This is done because it
+        matters whether multiple lists of signals are notified or not.
+        """
+        self.last_notified[output_id] = signals
+
     def test_hash(self):
         signals = [{'flavor': 'cherry', 'size': 'S'},
                    {'flavor': 'cherry', 'size': 'M'},
@@ -106,6 +115,9 @@ class TestHashTable(NIOBlockTestCase):
         self.configure_block(blk, config)
         blk.process_signals([Signal(s) for s in signals])
         self.assert_num_signals_notified(2, blk)
+        # Assert that only one list of signals was notified by checking that
+        # the last notified had ALL of the signals
+        self.assertEqual(len(self.last_notified[DEFAULT_TERMINAL]), 2)
         for sig_out in self.last_notified[DEFAULT_TERMINAL]:
             # Make sure the group got assigned to the right attr
             self.assertIn(sig_out.my_group, ['fruit', 'pie'])
