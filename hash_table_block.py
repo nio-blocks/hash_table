@@ -31,15 +31,11 @@ class HashTable(EnrichSignals, GroupBy, Block):
     group_attr = StringProperty(
         title="Group Attribute Name", default="group", visible=False)
     one_value = BoolProperty(title="One Value Per Key", default=False)
-    version = VersionProperty('0.1.0')
+    version = VersionProperty('0.1.1')
 
     def process_signals(self, signals, input_id='default'):
-        self.for_each_group(self._get_hash_from_group, signals)
-
-    def notify_signal(self, signal):
-        """ Notifies one signal, if it exists """
-        if signal:
-            self.notify_signals([signal])
+        self.notify_signals(self.for_each_group(
+            self._get_hash_from_group, signals))
 
     def _get_hash_from_group(self, signals, group):
         self.logger.debug("Processing group {} of {} signals".format(
@@ -47,7 +43,7 @@ class HashTable(EnrichSignals, GroupBy, Block):
         out_sig = self._perform_hash(signals)
         if out_sig:
             setattr(out_sig, self.group_attr(), group)
-            self.notify_signal(out_sig)
+            return out_sig
 
     def _perform_hash(self, signals):
         hash_dict = defaultdict(None) if self.one_value() else defaultdict(list)
