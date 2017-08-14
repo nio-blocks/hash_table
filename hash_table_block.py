@@ -1,14 +1,12 @@
 from collections import defaultdict
+
 from nio.block.base import Block
-from nio.signal.base import Signal
 from nio.block.mixins.group_by.group_by import GroupBy
 from nio.block.mixins.enrich.enrich_signals import EnrichSignals
-from nio.util.discovery import discoverable
 from nio.properties import Property, StringProperty, \
     BoolProperty, VersionProperty
 
 
-@discoverable
 class HashTable(EnrichSignals, GroupBy, Block):
 
     """ HashTable block.
@@ -46,7 +44,8 @@ class HashTable(EnrichSignals, GroupBy, Block):
             return out_sig
 
     def _perform_hash(self, signals):
-        hash_dict = defaultdict(None) if self.one_value() else defaultdict(list)
+        hash_dict = defaultdict(None) if self.one_value() \
+            else defaultdict(list)
 
         for signal in signals:
             sig_key = self.key(signal)
