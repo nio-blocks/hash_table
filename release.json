@@ -1,7 +1,7 @@
 {
   "nio/HashTable": {
     "language": "Python",
-    "reference": "git@github.com:nio-blocks/hash_table.git@v0.1.1",
-    "version": "0.1.1"
+    "version": "0.1.1",
+    "url": "git://github.com/nio-blocks/hash_table.git"
   }
 }
