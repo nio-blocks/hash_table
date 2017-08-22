@@ -7,11 +7,11 @@ from nio.properties import Property, StringProperty, \
     BoolProperty, VersionProperty
 
 
-class HashTable(EnrichSignals, GroupBy, Block):
+class Join(EnrichSignals, GroupBy, Block):
 
-    """ HashTable block.
+    """ Join block.
 
-    Group a list of signals into one hash table signal.
+    Group a list of signals into one signal.
     The output signal will contain an attribute for each
     evaluated *key* and the value of that attribute will
     be a list with an item of *value* for each matching signal.

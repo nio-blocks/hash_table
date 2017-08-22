@@ -4,10 +4,10 @@ from nio.block.terminals import DEFAULT_TERMINAL
 from nio.signal.base import Signal
 from nio.testing.block_test_case import NIOBlockTestCase
 
-from ..hash_table_block_deprecated import HashTable
+from ..join_block import Join
 
 
-class TestHashTable(NIOBlockTestCase):
+class TestJoin(NIOBlockTestCase):
 
     def signals_notified(self, block, signals, output_id):
         """ Don't extend last notified signals.
@@ -18,13 +18,13 @@ class TestHashTable(NIOBlockTestCase):
         """
         self.last_notified[output_id] = signals
 
-    def test_hash(self):
+    def test_join(self):
         signals = [{'flavor': 'cherry', 'size': 'S'},
                    {'flavor': 'cherry', 'size': 'M'},
                    {'flavor': 'cherry', 'size': 'L'},
                    {'flavor': 'banana', 'size': 'S'},
                    {'flavor': 'apple', 'size': 'S'}]
-        blk = HashTable()
+        blk = Join()
         config = {
             "key": "{{$flavor}}",
             "value": "{{$size}}",
@@ -45,7 +45,7 @@ class TestHashTable(NIOBlockTestCase):
                    {'key': 'cherry', 'value': 'L'},
                    {'key': 'banana', 'value': 'S'},
                    {'key': 'apple', 'value': 'S'}]
-        blk = HashTable()
+        blk = Join()
         self.configure_block(blk, {})
         blk.start()
         blk.process_signals([Signal(s) for s in signals])
@@ -63,7 +63,7 @@ class TestHashTable(NIOBlockTestCase):
                    {'key': 'cherry', 'value': 'L'},
                    {'key': 'banana', 'value': 'S'},
                    {'key': 'apple', 'value': 'S'}]
-        blk = HashTable()
+        blk = Join()
         self.configure_block(blk, {
             "enrich": {"exclude_existing": False}
         })
@@ -85,7 +85,7 @@ class TestHashTable(NIOBlockTestCase):
                    {'key': 'cherry', 'value': 'L'},
                    {'key': 'banana', 'value': 'S'},
                    {'key': 'apple', 'value': 'S'}]
-        blk = HashTable()
+        blk = Join()
         config = {
             'one_value': True
         }
@@ -110,7 +110,7 @@ class TestHashTable(NIOBlockTestCase):
                    {'group': 'pie', 'key': 'cherry', 'value': 'M'},
                    {'group': 'pie', 'key': 'cherry', 'value': 'L'},
                    {'group': 'fruit', 'key': 'banana', 'value': 'S'}]
-        blk = HashTable()
+        blk = Join()
         config = {
             'group_attr': 'my_group',
             'group_by': '{{$group}}',
@@ -142,7 +142,7 @@ class TestHashTable(NIOBlockTestCase):
                    {'name': "None", 'value': None},
                    {'name': now, 'value': now},
                    ]
-        blk = HashTable()
+        blk = Join()
         self.configure_block(blk, {
             "key": "{{ $name }}",
             "value": "{{ $value }}",
