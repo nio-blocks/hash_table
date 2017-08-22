@@ -1,12 +1,12 @@
 {
   "nio/HashTable": {
     "language": "Python",
-    "url": "git://github.com//nio-blocks/hash_table.git",
+    "url": "git://github.com/nio-blocks/hash_table.git",
     "version": "0.1.1"
   },
   "nio/Join": {
     "language": "Python",
-    "url": "git://github.com//nio-blocks/hash_table.git",
+    "url": "git://github.com/nio-blocks/join.git",
     "version": "0.1.1"
   }
 }
