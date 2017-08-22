@@ -7,9 +7,9 @@ from nio.properties import Property, StringProperty, \
     BoolProperty, VersionProperty
 
 
-class HashTable(EnrichSignals, GroupBy, Block):
+class Join(EnrichSignals, GroupBy, Block):
 
-    """ HashTable block.
+    """ Join block.
 
     Group a list of signals into one hash table signal.
     The output signal will contain an attribute for each

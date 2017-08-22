@@ -1,6 +1,6 @@
 HashTable
 =========
-Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.
+DEPRECATED, USE Join INSTEAD - Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.
 
 Properties
 ----------
@@ -18,9 +18,6 @@ Inputs
 Outputs
 -------
 - **default**: One output signal that has an attribute for each `key` and that attribute is a **list** containing a `value` for each matching key found in an input signal.
-
-If `one_value` is `True`, then each attribute on the output signal has a value that is a single item instead of a list of all matching values.
-If `group_by` is defined, the `group_by` attribute will effectively define a new list of input signals. One output signal will be generated for each value found in the `group_by` attribute.
 
 Commands
 --------
@@ -118,3 +115,31 @@ one_value: False
   {"group": "red", "scarf": ["M"], "shirt": [10, 14]}
 ]
 ```
+
+***
+
+Join
+====
+Group a list of input signals into one signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.
+
+Properties
+----------
+- **enrich**: If true, the original incoming signal will be included in the output signal.
+- **group_attr**: When `group_by` is used, this is the value that will be stored in a signal attribute called, in this case, `group`.
+- **group_by**: Incoming signal attribute to group signals by.
+- **key**: Evaluates to a key attribute on output signal.
+- **one_value**: If true, each attribute on the output signal has a value that is a single item instead of a list of all matching values.
+- **value**: Evaluates to a value in a list of values with a matching key.
+
+Inputs
+------
+- **default**: Any list of signals.
+
+Outputs
+-------
+- **default**: One output signal that has an attribute for each `key` and that attribute is a **list** containing a `value` for each matching key found in an input signal.
+
+Commands
+--------
+- **groups**: Display a list of the signal groupings.
+
