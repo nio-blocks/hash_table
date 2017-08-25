@@ -7,6 +7,6 @@
   "nio/Join": {
     "language": "Python",
     "url": "git://github.com/nio-blocks/join.git",
-    "version": "0.1.1"
+    "version": "1.0.0"
   }
 }
