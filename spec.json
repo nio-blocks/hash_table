@@ -2,6 +2,10 @@
   "nio/HashTable": {
     "version": "0.1.1",
     "description": "DEPRECATED, USE Join INSTEAD - Group a list of input signals into one hash table signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.",
+    "categories": [
+      "Signal Flow",
+      "Signal Modifier"
+    ],
     "properties": {
       "enrich": {
         "title": "Signal Enrichment",
@@ -63,6 +67,10 @@
   "nio/Join": {
     "version": "1.0.0",
     "description": "Group a list of input signals into one signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.",
+    "categories": [
+      "Signal Flow",
+      "Signal Modifier"
+    ],
     "properties": {
       "enrich": {
         "title": "Signal Enrichment",
