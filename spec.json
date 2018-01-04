@@ -1,7 +1,7 @@
 {
   "nio/Join": {
     "version": "1.0.0",
-    "description": "Group a list of input signals into one signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.",
+    "description": "The Join block will group a list of input signals into one output signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** of each value with a matching key.",
     "categories": [
       "Signal Flow",
       "Signal Modifier"
@@ -10,7 +10,7 @@
       "enrich": {
         "title": "Signal Enrichment",
         "type": "ObjectType",
-        "description": "If true, the original incoming signal will be included in the output signal.",
+        "description": "If checked (true), the attributes of the incoming signal will be excluded from the outgoing signal. If unchecked (false), the attributes of the incoming signal will be included in the outgoing signal.",
         "default": {
           "enrich_field": "",
           "exclude_existing": true
@@ -25,7 +25,7 @@
       "group_by": {
         "title": "Group By",
         "type": "Type",
-        "description": "Incoming signal attribute to group signals by.",
+        "description": "The signal attribute of the incoming signal whose values will be used to define groups on the outgoing signal.",
         "default": null
       },
       "key": {
@@ -59,7 +59,7 @@
     },
     "commands": {
       "groups": {
-        "description": "Display a list of the signal groupings.",
+        "description": "Returns a list of the block’s current signal groupings.",
         "params": {}
       }
     }

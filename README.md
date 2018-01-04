@@ -1,12 +1,12 @@
 Join
 ====
-Group a list of input signals into one signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.
+The Join block will group a list of input signals into one output signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** of each value with a matching key.
 
 Properties
 ----------
-- **enrich**: If true, the original incoming signal will be included in the output signal.
+- **enrich**: If checked (true), the attributes of the incoming signal will be excluded from the outgoing signal. If unchecked (false), the attributes of the incoming signal will be included in the outgoing signal.
 - **group_attr**: When `group_by` is used, this is the value that will be stored in a signal attribute called, in this case, `group`.
-- **group_by**: Incoming signal attribute to group signals by.
+- **group_by**: The signal attribute of the incoming signal whose values will be used to define groups on the outgoing signal.
 - **key**: Evaluates to a key attribute on output signal.
 - **one_value**: If true, each attribute on the output signal has a value that is a single item instead of a list of all matching values.
 - **value**: Evaluates to a value in a list of values with a matching key.
@@ -21,7 +21,7 @@ Outputs
 
 Commands
 --------
-- **groups**: Display a list of the signal groupings.
+- **groups**: Returns a list of the block’s current signal groupings.
 
 Examples
 --------
@@ -112,4 +112,3 @@ one_value: False
 ]
 ```
 
-***
