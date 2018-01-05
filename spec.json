@@ -1,7 +1,7 @@
 {
   "nio/Join": {
     "version": "1.0.0",
-    "description": "The Join block will group a list of input signals into one output signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** of each value with a matching key.",
+    "description": "The Join block will group a list of incoming signals into one outgoing signal. The outgoing signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** of each value with a matching key.",
     "categories": [
       "Signal Flow",
       "Signal Modifier"
@@ -19,7 +19,7 @@
       "group_attr": {
         "title": "Group Attribute Name",
         "type": "StringType",
-        "description": "When `group_by` is used, this is the value that will be stored in a signal attribute called, in this case, `group`.",
+        "description": "A hidden property. When `group_by` is used, the attibute name 'group' assigned by the `group_by` mixin will be replaced by this property. The default value is `group`.",
         "default": "group"
       },
       "group_by": {
@@ -31,13 +31,13 @@
       "key": {
         "title": "Key",
         "type": "StringType",
-        "description": "Evaluates to a key attribute on output signal.",
+        "description": "Evaluates to a key attribute on the outgoing signal.",
         "default": "{{ $key }}"
       },
       "one_value": {
         "title": "One Value Per Key",
         "type": "BoolType",
-        "description": "If true, each attribute on the output signal has a value that is a single item instead of a list of all matching values.",
+        "description": "If true, each attribute on the outgoing signal has a value that is a single item instead of a list of all matching values.",
         "default": false
       },
       "value": {
@@ -54,7 +54,7 @@
     },
     "outputs": {
       "default": {
-        "description": "One output signal that has an attribute for each `key` and that attribute is a **list** containing a `value` for each matching key found in an input signal."
+        "description": "One outgoing signal that has an attribute for each `key` and the value of that `key` is a **list** of each value from a matching key found on in the incoming signal."
       }
     },
     "commands": {
