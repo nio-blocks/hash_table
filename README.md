@@ -1,14 +1,14 @@
 Join
 ====
-Group a list of input signals into one signal. The output signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** containing each value with a matching key.
+The Join block will group a list of incoming signals into one outgoing signal. The outgoing signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** of each value with a matching key.
 
 Properties
 ----------
-- **enrich**: If true, the original incoming signal will be included in the output signal.
-- **group_attr**: When `group_by` is used, this is the value that will be stored in a signal attribute called, in this case, `group`.
-- **group_by**: Incoming signal attribute to group signals by.
-- **key**: Evaluates to a key attribute on output signal.
-- **one_value**: If true, each attribute on the output signal has a value that is a single item instead of a list of all matching values.
+- **enrich**: If checked (true), the attributes of the incoming signal will be excluded from the outgoing signal. If unchecked (false), the attributes of the incoming signal will be included in the outgoing signal.
+- **group_attr**: A hidden property. When `group_by` is used, the attibute name 'group' assigned by the `group_by` mixin will be replaced by this property. The default value is `group`.
+- **group_by**: The signal attribute of the incoming signal whose values will be used to define groups on the outgoing signal.
+- **key**: Evaluates to a key attribute on the outgoing signal.
+- **one_value**: If true, each attribute on the outgoing signal has a value that is a single item instead of a list of all matching values.
 - **value**: Evaluates to a value in a list of values with a matching key.
 
 Inputs
@@ -17,11 +17,11 @@ Inputs
 
 Outputs
 -------
-- **default**: One output signal that has an attribute for each `key` and that attribute is a **list** containing a `value` for each matching key found in an input signal.
+- **default**: One outgoing signal that has an attribute for each `key` and the value of that `key` is a **list** of each value from a matching key found on in the incoming signal.
 
 Commands
 --------
-- **groups**: Display a list of the signal groupings.
+- **groups**: Returns a list of the block’s current signal groupings.
 
 Examples
 --------
@@ -112,4 +112,3 @@ one_value: False
 ]
 ```
 
-***
