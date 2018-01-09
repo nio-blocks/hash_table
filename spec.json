@@ -1,6 +1,6 @@
 {
   "nio/Join": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "The Join block will group a list of incoming signals into one outgoing signal. The outgoing signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** of each value with a matching key.",
     "categories": [
       "Signal Flow",

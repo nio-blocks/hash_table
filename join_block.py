@@ -29,7 +29,7 @@ class Join(EnrichSignals, GroupBy, Block):
     group_attr = StringProperty(
         title="Group Attribute Name", default="group", visible=False)
     one_value = BoolProperty(title="One Value Per Key", default=False)
-    version = VersionProperty("1.0.0")
+    version = VersionProperty("1.0.1")
 
     def process_signals(self, signals, input_id='default'):
         self.notify_signals(self.for_each_group(
