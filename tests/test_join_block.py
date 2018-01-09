@@ -9,15 +9,6 @@ from ..join_block import Join
 
 class TestJoin(NIOBlockTestCase):
 
-    def signals_notified(self, block, signals, output_id):
-        """ Don't extend last notified signals.
-
-        We want to REPLACE the last signals notified each time the block
-        notifies signals rather than EXTEND the list. This is done because it
-        matters whether multiple lists of signals are notified or not.
-        """
-        self.last_notified[output_id] = signals
-
     def test_join(self):
         signals = [{'flavor': 'cherry', 'size': 'S'},
                    {'flavor': 'cherry', 'size': 'M'},
@@ -26,17 +17,17 @@ class TestJoin(NIOBlockTestCase):
                    {'flavor': 'apple', 'size': 'S'}]
         blk = Join()
         config = {
-            "key": "{{$flavor}}",
-            "value": "{{$size}}",
+            "key": "{{ $flavor }}",
+            "value": "{{ $size }}",
         }
         self.configure_block(blk, config)
         blk.start()
         blk.process_signals([Signal(s) for s in signals])
         self.assert_num_signals_notified(1, blk)
         self.assertEqual(
-            ['S', 'M', 'L'], self.last_notified[DEFAULT_TERMINAL][0].cherry)
-        self.assertEqual(['S'], self.last_notified[DEFAULT_TERMINAL][0].banana)
-        self.assertEqual(['S'], self.last_notified[DEFAULT_TERMINAL][0].apple)
+            ['S', 'M', 'L'], self.last_signal_notified().cherry)
+        self.assertEqual(['S'], self.last_signal_notified().banana)
+        self.assertEqual(['S'], self.last_signal_notified().apple)
         blk.stop()
 
     def test_defaults(self):
@@ -50,7 +41,7 @@ class TestJoin(NIOBlockTestCase):
         blk.start()
         blk.process_signals([Signal(s) for s in signals])
         self.assert_num_signals_notified(1, blk)
-        self.assertEqual(self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
+        self.assertEqual(self.last_signal_notified().to_dict(), {
             "apple": ['S'],
             "banana": ['S'],
             "cherry": ['S', 'M', 'L'],
@@ -70,7 +61,7 @@ class TestJoin(NIOBlockTestCase):
         blk.start()
         blk.process_signals([Signal(s) for s in signals])
         self.assert_num_signals_notified(1, blk)
-        self.assertEqual(self.last_notified[DEFAULT_TERMINAL][0].to_dict(), {
+        self.assertEqual(self.last_signal_notified().to_dict(), {
             "apple": ['S'],
             "banana": ['S'],
             "cherry": ['S', 'M', 'L'],
@@ -93,13 +84,13 @@ class TestJoin(NIOBlockTestCase):
         blk.start()
         blk.process_signals([Signal(s) for s in signals])
         self.assert_num_signals_notified(1, blk)
-        self.assertEqual('L', self.last_notified[DEFAULT_TERMINAL][0].cherry)
-        self.assertEqual('S', self.last_notified[DEFAULT_TERMINAL][0].banana)
-        self.assertEqual('S', self.last_notified[DEFAULT_TERMINAL][0].apple)
+        self.assertEqual('L', self.last_signal_notified().cherry)
+        self.assertEqual('S', self.last_signal_notified().banana)
+        self.assertEqual('S', self.last_signal_notified().apple)
 
         # Make sure the bad one didn't make its way into the output signal
         self.assertFalse(
-            hasattr(self.last_notified[DEFAULT_TERMINAL][0], 'flavor'))
+            hasattr(self.last_signal_notified(), 'flavor'))
         blk.stop()
 
     def test_grouping(self):
@@ -151,7 +142,7 @@ class TestJoin(NIOBlockTestCase):
         blk.start()
         blk.process_signals([Signal(s) for s in signals])
         self.assert_num_signals_notified(1, blk)
-        self.assertDictEqual(self.last_notified[DEFAULT_TERMINAL][0].to_dict(),
+        self.assertDictEqual(self.last_signal_notified().to_dict(),
                              {
                                  "group": None,
                                  "123": 456,
