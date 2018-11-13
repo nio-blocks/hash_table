@@ -4,20 +4,16 @@ The Join block will group a list of incoming signals into one outgoing signal. T
 
 Properties
 ----------
-- **enrich**: If checked (true), the attributes of the incoming signal will be excluded from the outgoing signal. If unchecked (false), the attributes of the incoming signal will be included in the outgoing signal.
-- **group_attr**: A hidden property. When `group_by` is used, the attibute name 'group' assigned by the `group_by` mixin will be replaced by this property. The default value is `group`.
-- **group_by**: The signal attribute of the incoming signal whose values will be used to define groups on the outgoing signal.
-- **key**: Evaluates to a key attribute on the outgoing signal.
-- **one_value**: If true, each attribute on the outgoing signal has a value that is a single item instead of a list of all matching values.
-- **value**: Evaluates to a value in a list of values with a matching key.
+- **Exclude Existing?**: If checked (true), the attributes of the incoming signal will be excluded from the outgoing signal. If unchecked (false), the attributes of the incoming signal will be included in the outgoing signal.
+- **Group By**: The signal attribute of the incoming signal whose values will be used to define groups on the outgoing signal.
+- **Key**: Evaluates to a key attribute on the outgoing signal.
+- **One Value Per Key**: If checked, each attribute on the outgoing signal has a value that is a single item instead of a list of all matching values.
+- **Value**: Evaluates to a value in a list of values with a matching key.
 
-Inputs
-------
-- **default**: Any list of signals.
 
 Outputs
 -------
-- **default**: One outgoing signal that has an attribute for each `key` and the value of that `key` is a **list** of each value from a matching key found on in the incoming signal.
+One outgoing signal that has an attribute for each `key` and the value of that `key` is a **list** of each value from a matching key found on the incoming signal.
 
 Commands
 --------
