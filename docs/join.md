@@ -1,6 +1,6 @@
 Join
 ====
-The Join block will group a list of incoming signals into one outgoing signal. The outgoing signal will contain an attribute for each evaluated `key` and the `value` of the key will be a **list** of each value with a matching key.
+The Join block will group a list of incoming signals into one outgoing signal. The outgoing signal will contain an attribute for each evaluated `key` and the `value` of that attribute will be a **list** of each value with a matching key.
 
 Properties
 ----------
@@ -9,7 +9,6 @@ Properties
 - **Key**: Evaluates to a key attribute on the outgoing signal.
 - **One Value Per Key**: If checked, each attribute on the outgoing signal has a value that is a single item instead of a list of all matching values.
 - **Value**: Evaluates to a value in a list of values with a matching key.
-
 
 Outputs
 -------
