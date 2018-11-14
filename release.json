@@ -1,7 +1,7 @@
 {
   "nio/Join": {
     "language": "Python",
-    "url": "git://github.com/nio-blocks/join.git",
-    "version": "1.0.1"
+    "from_python": "join_block.Join",
+    "url": "git://github.com/nio-blocks/join.git"
   }
 }
