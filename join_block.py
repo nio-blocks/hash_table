@@ -66,4 +66,4 @@ class Join(EnrichSignals, GroupBy, Block):
                         sig_value, sig_key))
 
         if len(hash_dict):
-            return self.get_output_signal(hash_dict, signals[-1])
+            return self.get_output_signal(dict(hash_dict), signals[-1])
